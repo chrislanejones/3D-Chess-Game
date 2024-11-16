@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react-three-fiber": "^6.0.13",
+    "vite": "^5.4.11"
+  }
+}
