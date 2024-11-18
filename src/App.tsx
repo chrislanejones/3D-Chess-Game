@@ -1,8 +1,10 @@
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+import { FC } from "react";
 import { Pawn } from "./components/pawn";
+import { Instances, Rook } from "./components/rook";
 
-function App() {
+const App: FC = () => {
   return (
     <>
       <Canvas
@@ -30,10 +32,13 @@ function App() {
           <boxGeometry args={[0.05, 0.01, 0.05]} />
           <meshStandardMaterial color="#000" />
         </mesh>
+        <Instances>
+          <Rook position={[0, 0, 0.05]} />
+        </Instances>
         <Pawn />
       </Canvas>
     </>
   );
-}
+};
 
 export default App;
