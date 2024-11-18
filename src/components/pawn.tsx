@@ -1,7 +1,8 @@
 import { useGLTF } from "@react-three/drei";
-import { GroupProps } from "@react-three/fiber";
+import { GroupProps, useFrame } from "@react-three/fiber";
 import { GLTF } from "three-stdlib";
 import * as THREE from "three";
+import { useRef, useEffect } from "react";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -19,22 +20,45 @@ type GLTFResult = GLTF & {
 
 export function Pawn(props: GroupProps) {
   const { nodes, materials } = useGLTF("/models/Pawn.glb") as GLTFResult;
+  const groupRef = useRef<THREE.Group>(null);
+  const keys = useRef<{ [key: string]: boolean }>({});
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      keys.current[e.key.toLowerCase()] = true;
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      keys.current[e.key.toLowerCase()] = false;
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, []);
+
+  useFrame(() => {
+    if (!groupRef.current) return;
+
+    const moveSpeed = 0.05;
+
+    if (keys.current["w"]) groupRef.current.position.z -= moveSpeed;
+    if (keys.current["s"]) groupRef.current.position.z += moveSpeed;
+    if (keys.current["a"]) groupRef.current.position.x -= moveSpeed;
+    if (keys.current["d"]) groupRef.current.position.x += moveSpeed;
+  });
 
   return (
-    <group {...props} dispose={null}>
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.Carved.geometry}
-        material={
-          materials["AI Gen Texture - Sci-Fi White Orange_mat_0_0_2.000"]
-        }
-        position={[0, -0.003, 0]}
-      >
+    <group ref={groupRef} {...props} dispose={null}>
+      <group {...props} dispose={null}>
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Carved_1.geometry}
+          geometry={nodes.Carved.geometry}
           material={
             materials["AI Gen Texture - Sci-Fi White Orange_mat_0_0_2.000"]
           }
@@ -43,42 +67,52 @@ export function Pawn(props: GroupProps) {
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Carved_2.geometry}
+            geometry={nodes.Carved_1.geometry}
             material={
               materials["AI Gen Texture - Sci-Fi White Orange_mat_0_0_2.000"]
             }
             position={[0, -0.003, 0]}
-          />
+          >
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.Carved_2.geometry}
+              material={
+                materials["AI Gen Texture - Sci-Fi White Orange_mat_0_0_2.000"]
+              }
+              position={[0, -0.003, 0]}
+            />
+          </mesh>
         </mesh>
-      </mesh>
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.body.geometry}
-        material={
-          materials["AI Gen Texture - Sci-Fi White Orange_mat_0_0_2.000"]
-        }
-      >
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.neck.geometry}
+          geometry={nodes.body.geometry}
           material={
             materials["AI Gen Texture - Sci-Fi White Orange_mat_0_0_2.000"]
           }
-          position={[0, 0.015, 0]}
         >
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.head.geometry}
+            geometry={nodes.neck.geometry}
             material={
               materials["AI Gen Texture - Sci-Fi White Orange_mat_0_0_2.000"]
             }
-            position={[0, 0.002, 0]}
-          />
+            position={[0, 0.015, 0]}
+          >
+            <mesh
+              castShadow
+              receiveShadow
+              geometry={nodes.head.geometry}
+              material={
+                materials["AI Gen Texture - Sci-Fi White Orange_mat_0_0_2.000"]
+              }
+              position={[0, 0.002, 0]}
+            />
+          </mesh>
         </mesh>
-      </mesh>
+      </group>
     </group>
   );
 }
