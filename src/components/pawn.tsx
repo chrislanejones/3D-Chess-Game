@@ -44,7 +44,7 @@ export function Pawn(props: GroupProps) {
   useFrame(() => {
     if (!groupRef.current) return;
 
-    const moveSpeed = 0.05;
+    const moveSpeed = 0.005;
 
     if (keys.current["w"]) groupRef.current.position.z -= moveSpeed;
     if (keys.current["s"]) groupRef.current.position.z += moveSpeed;
