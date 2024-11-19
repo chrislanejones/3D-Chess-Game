@@ -37,8 +37,8 @@ const App: FC = () => {
         <Instances>
           <Rook position={[0, 0, 0.05]} />
         </Instances>
-        <Chessboard />
         <Pawn />
+        <Chessboard />
       </Canvas>
     </>
   );
