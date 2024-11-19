@@ -9,8 +9,8 @@ export function Chessboard({ tileSize = 1, ...props }: ChessboardProps) {
 
   return (
     <group {...props}>
-      {Array.from({ length: boardSize }, (_, row) =>
-        Array.from({ length: boardSize }, (_, col) => {
+      {Array.from({ length: boardSize }, (_, row: number) =>
+        Array.from({ length: boardSize }, (_, col: number) => {
           const isWhite = (row + col) % 2 === 0;
 
           return (
