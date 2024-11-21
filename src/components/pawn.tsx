@@ -23,35 +23,6 @@ export function Pawn(props: GroupProps) {
   const groupRef = useRef<THREE.Group>(null);
   const keys = useRef<{ [key: string]: boolean }>({});
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      keys.current[e.key.toLowerCase()] = true;
-    };
-
-    const handleKeyUp = (e: KeyboardEvent) => {
-      keys.current[e.key.toLowerCase()] = false;
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-    };
-  }, []);
-
-  useFrame(() => {
-    if (!groupRef.current) return;
-
-    const moveSpeed = 0.005;
-
-    if (keys.current["w"]) groupRef.current.position.z -= moveSpeed;
-    if (keys.current["s"]) groupRef.current.position.z += moveSpeed;
-    if (keys.current["a"]) groupRef.current.position.x -= moveSpeed;
-    if (keys.current["d"]) groupRef.current.position.x += moveSpeed;
-  });
-
   return (
     <group ref={groupRef} {...props} dispose={null}>
       <group {...props} dispose={null}>
