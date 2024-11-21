@@ -3,7 +3,8 @@ import { Canvas } from "@react-three/fiber";
 import { FC } from "react";
 import { Instances, Rook } from "./components/rook";
 import { Chessboard } from "./components/chessboard";
-import { Pawn } from "./components/pawn";
+
+import DraggableObject from "./components/draggable";
 
 const App: FC = () => {
   return (
@@ -15,7 +16,8 @@ const App: FC = () => {
         <OrbitControls />
         <ambientLight intensity={5} />
         <pointLight position={[10, 10, 10]} />
-        <Pawn scale={5} position={[0.41, 0.04, 0.08]} />
+        <DraggableObject position={[0, 0, 0]} />
+
         <Instances>
           <Rook scale={25} position={[3.5, 0.04, 3.5]} />
         </Instances>
