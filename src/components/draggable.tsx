@@ -2,40 +2,44 @@ import { useRef, useState } from "react";
 import { TransformControls } from "@react-three/drei";
 import * as THREE from "three";
 import { Pawn } from "./pawn";
+import { useFrame } from "@react-three/fiber";
 
 interface DraggableProps {
   position: [number, number, number];
 }
 
 const DraggableObject = ({ position }: DraggableProps) => {
-  const pawnRef = useRef<THREE.Group>(null);
+  const meshRef = useRef<THREE.Mesh>(null);
+  const [active, setActive] = useState(false);
   const transformControlsRef = useRef<any>(null);
-  const [isSelected, setIsSelected] = useState(false);
+
+  // Optional: Add frame-based logic if needed
+  useFrame(() => {
+    // You can add any per-frame logic here
+  });
 
   const handleClick = () => {
-    setIsSelected(!isSelected);
-
-    if (transformControlsRef.current && pawnRef.current) {
-      if (isSelected) {
-        transformControlsRef.current.detach();
-      } else {
-        transformControlsRef.current.attach(pawnRef.current);
-      }
+    setActive(!active);
+    // Optionally activate transform controls when clicked
+    if (transformControlsRef.current) {
+      transformControlsRef.current.attach(meshRef.current);
     }
   };
 
   return (
-    <group position={position}>
-      <Pawn ref={pawnRef} scale={5} onClick={handleClick} />
+    <>
       <TransformControls
         ref={transformControlsRef}
         mode="translate"
-        position={[-2.6, -0.5, -2.5]} // Positioned slightly above the pawn
         showX
         showY={false}
         showZ
-      />
-    </group>
+      >
+        <mesh ref={meshRef} position={position} onClick={handleClick}>
+          <Pawn scale={5} />
+        </mesh>
+      </TransformControls>
+    </>
   );
 };
 
