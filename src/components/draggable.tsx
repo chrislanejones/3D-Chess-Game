@@ -8,19 +8,34 @@ interface DraggableProps {
 }
 
 const DraggableObject = ({ position }: DraggableProps) => {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const [active, setActive] = useState(false);
+  const pawnRef = useRef<THREE.Group>(null);
+  const transformControlsRef = useRef<any>(null);
+  const [isSelected, setIsSelected] = useState(false);
+
+  const handleClick = () => {
+    setIsSelected(!isSelected);
+
+    if (transformControlsRef.current && pawnRef.current) {
+      if (isSelected) {
+        transformControlsRef.current.detach();
+      } else {
+        transformControlsRef.current.attach(pawnRef.current);
+      }
+    }
+  };
 
   return (
-    <TransformControls mode="translate" showX showY={false} showZ>
-      <mesh
-        ref={meshRef}
-        position={position}
-        onClick={() => setActive(!active)}
-      >
-        <Pawn scale={5} position={[0.41, 0.04, 0.08]} />
-      </mesh>
-    </TransformControls>
+    <group position={position}>
+      <Pawn ref={pawnRef} scale={5} onClick={handleClick} />
+      <TransformControls
+        ref={transformControlsRef}
+        mode="translate"
+        position={[-2.6, -0.5, -2.5]} // Positioned slightly above the pawn
+        showX
+        showY={false}
+        showZ
+      />
+    </group>
   );
 };
 

@@ -14,6 +14,7 @@ export function Chessboard({ tileSize = 1, ...props }: ChessboardProps) {
           const isWhite = (row + col) % 2 === 0;
           return (
             <mesh
+              key={`${row}-${col}`}
               position={[
                 col * tileSize - (boardSize * tileSize) / 2 + tileSize / 2,
                 0,

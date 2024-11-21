@@ -1,8 +1,8 @@
 import { useGLTF } from "@react-three/drei";
-import { GroupProps, useFrame } from "@react-three/fiber";
+import { GroupProps } from "@react-three/fiber";
 import { GLTF } from "three-stdlib";
 import * as THREE from "three";
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 
 type GLTFResult = GLTF & {
   nodes: {
