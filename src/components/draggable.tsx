@@ -1,8 +1,18 @@
 import React, { useRef, useState } from "react";
 import { Canvas, useThree, useFrame, ThreeEvent } from "@react-three/fiber";
 import { useDrag } from "@use-gesture/react";
-import { a, AnimatedProps } from "@react-spring/three";
+import { a, animated } from "@react-spring/three";
 import * as THREE from "three";
+
+type AnimatedMeshProps = AnimatedProps<MeshProps> & {
+  onClick: (event: ThreeEvent<MouseEvent>) => void;
+};
+
+declare module "@react-spring/three" {
+  export interface AnimatedMeshProps extends MeshProps {
+    // You can add here any additional props you want to use
+  }
+}
 
 // Draggable Three Fiber Component
 const DraggableCube: React.FC<{
@@ -45,7 +55,7 @@ const DraggableCube: React.FC<{
   });
 
   return (
-    <a.mesh
+    <animated.mesh
       ref={meshRef}
       {...bind()}
       position={position}
@@ -61,7 +71,7 @@ const DraggableCube: React.FC<{
         opacity={isDragging ? 0.8 : 1}
         transparent
       />
-    </a.mesh>
+    </animated.mesh>
   );
 };
 
