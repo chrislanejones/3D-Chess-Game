@@ -1,6 +1,8 @@
 import * as THREE from "three";
-import React, { useMemo, useContext, createContext } from "react";
+import React, { useMemo, useContext, createContext, useRef } from "react";
 import { useGLTF, Merged } from "@react-three/drei";
+import { useThree } from "@react-three/fiber";
+import { DragControls } from "three/examples/jsm/controls/DragControls";
 import { GLTF } from "three-stdlib";
 
 type GLTFResult = GLTF & {
@@ -46,8 +48,33 @@ export function Instances({ children, ...props }: React.PropsWithChildren<{}>) {
 
 export function Rook(props: JSX.IntrinsicElements["group"]) {
   const instances = useContext(context);
+  const groupRef = useRef<THREE.Group>(null);
+  const { camera, gl } = useThree();
+
+  React.useEffect(() => {
+    if (groupRef.current) {
+      const controls = new DragControls(
+        [groupRef.current],
+        camera,
+        gl.domElement
+      );
+
+      controls.addEventListener("dragstart", () => {
+        // Disable other controls if needed
+      });
+
+      controls.addEventListener("dragend", () => {
+        // Re-enable other controls if needed
+      });
+
+      return () => {
+        controls.dispose();
+      };
+    }
+  }, [camera, gl]);
+
   return (
-    <group {...props} dispose={null}>
+    <group ref={groupRef} {...props} dispose={null}>
       <instances.Body>
         <instances.Cylinder position={[0, 0.035, 0]}>
           <instances.TorusPatch position={[0, 0.003, 0]} />
