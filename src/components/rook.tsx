@@ -59,6 +59,13 @@ export function Rook(props: JSX.IntrinsicElements["group"]) {
         gl.domElement
       );
 
+      controls.addEventListener("drag", (event) => {
+        if (event.object) {
+          // Lock Y position to its initial value
+          event.object.position.y = 0;
+        }
+      });
+
       controls.addEventListener("dragstart", () => {
         // Disable other controls if needed
       });
