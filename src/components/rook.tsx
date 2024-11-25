@@ -2,7 +2,7 @@ import * as THREE from "three";
 import React, { useMemo, useContext, createContext, useRef } from "react";
 import { useGLTF, Merged } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { DragControls } from "three/examples/jsm/controls/DragControls";
 import { GLTF } from "three-stdlib";
 
 type GLTFResult = GLTF & {
